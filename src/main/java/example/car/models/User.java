@@ -8,49 +8,41 @@ import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity()
 @Table(name = "users")
 @DynamicInsert
 public class User {
-    @Getter
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Getter
-    @Setter
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Getter
-    @Setter
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Getter
-    @Setter
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Getter
-    @Setter
     @Column(name = "firstname")
     private String firstname;
 
-    @Getter
-    @Setter
     @Column(name = "lastname")
     private String lastname;
 
-    @Getter
-    @Setter
     @ColumnDefault("false")
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Getter
     @ColumnDefault("NOW()")
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    private void init() {
+        createdAt = LocalDateTime.now();
+    }
 }

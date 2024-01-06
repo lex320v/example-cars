@@ -1,18 +1,17 @@
 package example.car.controllers;
 
-import example.car.models.User;
-import example.car.repositories.UserRepository;
-import org.springframework.stereotype.Controller;
+import example.car.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -21,14 +20,9 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public String signUp() {
-        User user = new User();
-        user.setEmail("example@mail.ru");
-        user.setPassword("1111");
-        user.setUsername("lex");
-//        user.setIsActive(true);
-
-        userRepository.save(user);
+    public String signUp(@RequestBody Object body) {
+        System.out.println(body);
+//        userService.createUser();
 
         return "index";
     }
