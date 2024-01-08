@@ -32,7 +32,7 @@ public class AuthenticationService {
                 .role(Role.ROLE_USER)
                 .build();
         userService.create(user);
-        var jwt = jwtService.generateToken(user);
+        var jwt = jwtService.generateToken(user.getUsername());
 
         return new JwtAuthResponseDTO(jwt);
     }
@@ -43,7 +43,7 @@ public class AuthenticationService {
         ));
 
         var user = userService.userDetailsService().loadUserByUsername(request.getUsername());
-        var jwt = jwtService.generateToken(user);
+        var jwt = jwtService.generateToken(user.getUsername());
 
         return new JwtAuthResponseDTO(jwt);
     }
