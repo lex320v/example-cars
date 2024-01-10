@@ -33,35 +33,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        var authHeader = request.getHeader(HEADER_NAME);
-
-        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith(BEARER_PREFIX)) {
-            var jwt = authHeader.substring(BEARER_PREFIX.length());
-            if (jwt.isBlank()) {
-                response.sendError(
-                        HttpServletResponse.SC_BAD_REQUEST,
-                        "Invalid JWT token in Bearer Header"
-                );
-            } else {
-                try {
-                    String username = jwtService.validateTokenAndRetrieveClaim(jwt);
-                    UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            userDetails.getPassword(),
-                            userDetails.getAuthorities()
-                    );
-                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }
-                } catch (JWTVerificationException exception) {
-                    response.sendError(
-                            HttpServletResponse.SC_BAD_REQUEST,
-                            "Invalid JWT token"
-                    );
-                }
-            }
+        String authHeader = request.getHeader(HEADER_NAME);
+        if (authHeader == null || authHeader.isBlank() || !authHeader.startsWith(BEARER_PREFIX)) {
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        String jwt = authHeader.substring(BEARER_PREFIX.length());
+        if (jwt.isBlank()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        try {
+            String username = jwtService.validateTokenAndRetrieveClaim(jwt);
+            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    userDetails.getPassword(),
+                    userDetails.getAuthorities()
+            );
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        } catch (JWTVerificationException exception) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         filterChain.doFilter(request, response);
     }
