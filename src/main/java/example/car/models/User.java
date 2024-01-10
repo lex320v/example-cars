@@ -56,6 +56,9 @@ public class User implements UserDetails {
         createdAt = LocalDateTime.now();
     }
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Car> cars;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
