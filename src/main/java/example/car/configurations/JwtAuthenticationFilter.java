@@ -1,14 +1,13 @@
 package example.car.configurations;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import example.car.services.JwtService;
 import example.car.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,17 +16,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
     private final JwtService jwtService;
     private final UserService userService;
-
-    public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
-        this.jwtService = jwtService;
-        this.userService = userService;
-    }
 
     @Override
     protected void doFilterInternal(
@@ -42,28 +37,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String jwt = authHeader.substring(BEARER_PREFIX.length());
-        if (jwt.isBlank()) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
-        try {
-            String username = jwtService.validateTokenAndRetrieveClaim(jwt);
-            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
+
+        if (!jwt.isBlank() && jwtService.validateToken(jwt)) {
+            String username = jwtService.getClaims(jwt).get("username").asString();
+
+            UserDetails userDetails = userService.findUserByUsername(username);
+
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userDetails,
                     null,
                     userDetails.getAuthorities()
             );
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            context.setAuthentication(authToken);
-            SecurityContextHolder.setContext(context);
-        } catch (JWTVerificationException exception) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+            SecurityContextHolder.getContext().setAuthentication(authToken);
 
+        }
 
         filterChain.doFilter(request, response);
     }
