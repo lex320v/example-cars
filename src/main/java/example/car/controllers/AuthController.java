@@ -1,8 +1,8 @@
 package example.car.controllers;
 
-import example.car.dto.JwtAuthResponseDTO;
-import example.car.dto.SignInRequestDTO;
-import example.car.dto.SignUpRequestDTO;
+import example.car.dto.auth.JwtAuthResponseDTO;
+import example.car.dto.auth.SignInRequestDTO;
+import example.car.dto.auth.SignUpRequestDTO;
 import example.car.services.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,6 +29,6 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public JwtAuthResponseDTO signIn(@RequestBody @Valid SignInRequestDTO request) {
-        return   authenticationService.signIn(request);
+        return authenticationService.signIn(request);
     }
 }

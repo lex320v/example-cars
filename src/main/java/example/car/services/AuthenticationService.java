@@ -1,8 +1,8 @@
 package example.car.services;
 
-import example.car.dto.JwtAuthResponseDTO;
-import example.car.dto.SignInRequestDTO;
-import example.car.dto.SignUpRequestDTO;
+import example.car.dto.auth.JwtAuthResponseDTO;
+import example.car.dto.auth.SignInRequestDTO;
+import example.car.dto.auth.SignUpRequestDTO;
 import example.car.models.Role;
 import example.car.models.User;
 import org.springframework.security.authentication.AuthenticationManager;

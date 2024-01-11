@@ -1,5 +1,6 @@
 package example.car.services;
 
+import example.car.dto.car.CarDTO;
 import example.car.models.Car;
 import example.car.repositories.CarRepository;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,11 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public Car createCar(Car car) {
+    public Car createCar(CarDTO carDTO) {
+        Car car = Car.builder()
+                .manufacturer(carDTO.getManufacturer())
+                .build();
+
         return carRepository.save(car);
     }
 }

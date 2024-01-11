@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Schema
-public class CreateCarDTO {
+public class CarDTO {
     @Size(min = 4, max = 20)
     @NotBlank
     private String manufacturer;

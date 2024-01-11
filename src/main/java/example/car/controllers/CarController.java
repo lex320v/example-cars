@@ -1,6 +1,6 @@
 package example.car.controllers;
 
-import example.car.dto.car.CreateCarDTO;
+import example.car.dto.car.CarDTO;
 import example.car.models.Car;
 import example.car.services.CarService;
 import jakarta.validation.Valid;
@@ -18,9 +18,15 @@ public class CarController {
     private List<Car> getCars() {
         return carService.getCars();
     }
-
     @PostMapping
-    private Car createCar(@RequestBody @Valid CreateCarDTO request) {
-     return carService.createCar(new Car());
+    private Car createCar(@RequestBody @Valid CarDTO request) {
+        System.out.println(carService);
+
+
+     return carService.createCar(request);
+    }
+    @PutMapping
+    private Car updateCar(@RequestBody @Valid CarDTO request) {
+        return carService.getCars().stream().findFirst().orElse(null);
     }
 }
