@@ -3,18 +3,16 @@ package example.car.services;
 import example.car.models.Role;
 import example.car.models.User;
 import example.car.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public User create(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {

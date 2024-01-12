@@ -3,12 +3,12 @@ package example.car.services;
 import example.car.dto.car.CarDTO;
 import example.car.models.Car;
 import example.car.repositories.CarRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class CarService {
     private final CarRepository carRepository;
