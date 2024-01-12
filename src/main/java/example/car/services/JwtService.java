@@ -43,7 +43,7 @@ public class JwtService {
 
             return true;
         } catch (Exception e) {
-            log.error("invalid token", e);
+            log.warn(e.getMessage());
         }
 
 

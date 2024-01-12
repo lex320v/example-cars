@@ -1,10 +1,7 @@
 package example.car.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@ToString(exclude = "cars")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -56,7 +54,7 @@ public class User implements UserDetails {
         createdAt = LocalDateTime.now();
     }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Car> cars;
 
     @Enumerated(EnumType.STRING)
