@@ -5,7 +5,6 @@ import example.car.dto.auth.SignInRequestDTO;
 import example.car.dto.auth.SignUpRequestDTO;
 import example.car.models.Role;
 import example.car.models.User;
-import example.car.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,14 +34,12 @@ public class AuthService {
     }
 
     public JwtResponseDTO signIn(SignInRequestDTO request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+        User user = (User) authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()
-        ));
+        )).getPrincipal();
+        System.out.println(user);
 
-        var user = userService.userDetailsService().loadUserByUsername(request.getUsername());
-
-        var jwt = jwtService.generateAccessToken(user.getUsername(), user.getAuthorities().toString());
-
+        String jwt = jwtService.generateAccessToken(user.getUsername(), user.getRole().name());
 
         return new JwtResponseDTO(jwt, jwt);
     }

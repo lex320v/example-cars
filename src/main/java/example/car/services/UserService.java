@@ -5,7 +5,6 @@ import example.car.models.User;
 import example.car.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +27,6 @@ public class UserService {
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("username does not exist"));
-    }
-
-    public UserDetailsService userDetailsService() {
-        return this::findUserByUsername;
     }
 
     public User getCurrentUser() {
