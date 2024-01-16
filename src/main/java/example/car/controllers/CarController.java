@@ -4,12 +4,16 @@ import example.car.dto.car.CarDTO;
 import example.car.exceptions.NotFoundException;
 import example.car.models.Car;
 import example.car.services.CarService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Car Controller")
+@SecurityRequirement(name = "JWT")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/cars")
