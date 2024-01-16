@@ -22,7 +22,6 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
     public String exampleAdmin() {
         return "Hello, admin!";
     }
