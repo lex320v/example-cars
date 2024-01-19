@@ -7,17 +7,30 @@ import example.car.models.Car;
 import example.car.models.User;
 import example.car.repositories.CarRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class CarService {
     private final CarRepository carRepository;
 
-    public List<Car> getCars() {
-        return carRepository.findAll();
+    public ResponseSavedCarDto getCarById(Long id) throws BadRequestException {
+        var car = carRepository.findById(id);
+        if (car.isEmpty()) {
+            throw new BadRequestException("car with id: " + id + " does not exist");
+        }
+
+        return CarMapper.INSTANCE.carToResponseCreatedCarDto(car.get());
+    }
+
+    public List<ResponseSavedCarDto> getCars() {
+        var cars = carRepository.findAll();
+
+        return  cars.stream().map(CarMapper.INSTANCE::carToResponseCreatedCarDto).collect(Collectors.toList());
     }
 
     public ResponseSavedCarDto createCar(CarDto carDTO, User currentUser) {
@@ -26,7 +39,7 @@ public class CarService {
                 .user(currentUser)
                 .build();
 
-        Car savedCar = carRepository.save(car);
+        var savedCar = carRepository.save(car);
 
         return CarMapper.INSTANCE.carToResponseCreatedCarDto(savedCar);
     }

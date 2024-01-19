@@ -33,6 +33,7 @@ public class Car implements Serializable {
         createdAt = LocalDateTime.now();
     }
 
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
