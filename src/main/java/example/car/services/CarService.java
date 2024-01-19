@@ -1,7 +1,10 @@
 package example.car.services;
 
-import example.car.dto.car.CarDTO;
+import example.car.dto.car.CarDto;
+import example.car.dto.car.CarMapper;
+import example.car.dto.car.ResponseCreatedCarDto;
 import example.car.models.Car;
+import example.car.models.User;
 import example.car.repositories.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +20,14 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public Car createCar(CarDTO carDTO) {
+    public ResponseCreatedCarDto createCar(CarDto carDTO, User currentUser) {
         Car car = Car.builder()
-                .manufacturer(carDTO.getManufacturer())
+                .manufacturer(carDTO.manufacturer)
+                .user(currentUser)
                 .build();
 
-        return carRepository.save(car);
+        Car savedCar = carRepository.save(car);
+
+        return CarMapper.INSTANCE.carToResponseCreatedCarDto(savedCar);
     }
 }

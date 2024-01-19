@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Schema(description = "Sign in request")
-public class SignInRequestDTO {
-
+public class SignInRequestDto {
     @Schema(description = "username", example = "Jon")
     @Size(min = 1, max = 20)
     @NotBlank

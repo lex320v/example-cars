@@ -1,13 +1,16 @@
 package example.car.controllers;
 
-import example.car.dto.car.CarDTO;
+import example.car.dto.car.CarDto;
+import example.car.dto.car.ResponseCreatedCarDto;
 import example.car.exceptions.NotFoundException;
 import example.car.models.Car;
+import example.car.models.User;
 import example.car.services.CarService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,14 +35,12 @@ public class CarController {
         return carService.getCars();
     }
     @PostMapping
-    private Car createCar(@RequestBody @Valid CarDTO request) {
-        System.out.println(carService);
+    private ResponseCreatedCarDto createCar(@RequestBody @Valid CarDto request, @AuthenticationPrincipal User user) {
 
-
-     return carService.createCar(request);
+     return carService.createCar(request, user);
     }
     @PutMapping
-    private Car updateCar(@RequestBody @Valid CarDTO request) {
+    private Car updateCar(@RequestBody @Valid CarDto request) {
         return carService.getCars().stream().findFirst().orElse(null);
     }
 }

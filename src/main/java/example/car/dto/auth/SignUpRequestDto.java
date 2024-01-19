@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "Sign up request")
-public class SignUpRequestDTO {
+public class SignUpRequestDto {
     @Schema(description = "username", example = "jon")
     @Size(min = 1, max = 50)
     @NotBlank

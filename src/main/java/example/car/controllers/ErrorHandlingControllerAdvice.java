@@ -50,7 +50,7 @@ public class ErrorHandlingControllerAdvice {
 
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> exception(Exception exception) {
-        log.error("ErrorHandlingControllerAdvice: " + exception.getMessage());
+        log.error("ErrorHandlingControllerAdvice: " + exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorMessage(exception.getMessage()));

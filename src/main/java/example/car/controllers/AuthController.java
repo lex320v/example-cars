@@ -1,8 +1,8 @@
 package example.car.controllers;
 
-import example.car.dto.auth.JwtResponseDTO;
-import example.car.dto.auth.SignInRequestDTO;
-import example.car.dto.auth.SignUpRequestDTO;
+import example.car.dto.auth.JwtResponseDto;
+import example.car.dto.auth.SignInRequestDto;
+import example.car.dto.auth.SignUpRequestDto;
 import example.car.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,13 +24,13 @@ public class AuthController {
 
     @Operation(summary = "Registration new user")
     @PostMapping("/sign-up")
-    public JwtResponseDTO signUp(@RequestBody @Valid SignUpRequestDTO request) {
+    public JwtResponseDto signUp(@RequestBody @Valid SignUpRequestDto request) {
         return authService.signUp(request);
     }
 
     @Operation(summary = "Login")
     @PostMapping("/sign-in")
-    public JwtResponseDTO signIn(@RequestBody @Valid SignInRequestDTO request) {
+    public JwtResponseDto signIn(@RequestBody @Valid SignInRequestDto request) {
         return authService.signIn(request);
     }
 }

@@ -1,8 +1,8 @@
 package example.car.services;
 
-import example.car.dto.auth.JwtResponseDTO;
-import example.car.dto.auth.SignInRequestDTO;
-import example.car.dto.auth.SignUpRequestDTO;
+import example.car.dto.auth.JwtResponseDto;
+import example.car.dto.auth.SignInRequestDto;
+import example.car.dto.auth.SignUpRequestDto;
 import example.car.models.Role;
 import example.car.models.User;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public JwtResponseDTO signUp(SignUpRequestDTO request) {
+    public JwtResponseDto signUp(SignUpRequestDto request) {
         var user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
@@ -30,10 +30,10 @@ public class AuthService {
         userService.create(user);
         var jwt = jwtService.generateAccessToken(user.getUsername(), user.getRole().name());
 
-        return new JwtResponseDTO(jwt, jwt);
+        return new JwtResponseDto(jwt, jwt);
     }
 
-    public JwtResponseDTO signIn(SignInRequestDTO request) {
+    public JwtResponseDto signIn(SignInRequestDto request) {
         User user = (User) authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()
         )).getPrincipal();
@@ -41,6 +41,6 @@ public class AuthService {
 
         String jwt = jwtService.generateAccessToken(user.getUsername(), user.getRole().name());
 
-        return new JwtResponseDTO(jwt, jwt);
+        return new JwtResponseDto(jwt, jwt);
     }
 }

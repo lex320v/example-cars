@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @Schema(description = "Jwt auth response")
-public class JwtResponseDTO {
+public class JwtResponseDto {
     private final String type = "Bearer";
 
     @Schema(description = "access token", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
