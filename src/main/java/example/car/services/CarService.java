@@ -2,7 +2,7 @@ package example.car.services;
 
 import example.car.dto.car.CarDto;
 import example.car.dto.car.CarMapper;
-import example.car.dto.car.ResponseCreatedCarDto;
+import example.car.dto.car.ResponseSavedCarDto;
 import example.car.models.Car;
 import example.car.models.User;
 import example.car.repositories.CarRepository;
@@ -20,7 +20,7 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public ResponseCreatedCarDto createCar(CarDto carDTO, User currentUser) {
+    public ResponseSavedCarDto createCar(CarDto carDTO, User currentUser) {
         Car car = Car.builder()
                 .manufacturer(carDTO.manufacturer)
                 .user(currentUser)

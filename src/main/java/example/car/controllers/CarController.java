@@ -1,7 +1,7 @@
 package example.car.controllers;
 
 import example.car.dto.car.CarDto;
-import example.car.dto.car.ResponseCreatedCarDto;
+import example.car.dto.car.ResponseSavedCarDto;
 import example.car.exceptions.NotFoundException;
 import example.car.models.Car;
 import example.car.models.User;
@@ -35,7 +35,7 @@ public class CarController {
         return carService.getCars();
     }
     @PostMapping
-    private ResponseCreatedCarDto createCar(@RequestBody @Valid CarDto request, @AuthenticationPrincipal User user) {
+    private ResponseSavedCarDto createCar(@RequestBody @Valid CarDto request, @AuthenticationPrincipal User user) {
 
      return carService.createCar(request, user);
     }
